@@ -1,0 +1,18 @@
+#!/bin/sh
+
+for mod in modules/*; do 
+	echo "==== testing $mod ======"
+	cd $mod
+	terraform validate || exit 1
+	echo "terraform validate......OK"
+	cd - 
+done
+
+echo "
+*************************************************
+  ALL TERRAFORM VALIDATE tests have succeded
+*************************************************
+"
+
+exit 0
+
