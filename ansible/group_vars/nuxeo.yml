@@ -1,0 +1,5 @@
+NUXEO_PACKAGES: amazon-s3-online-storage nuxeo-csv nuxeo-dam nuxeo-diff nuxeo-diff-pictures nuxeo-platform-user-registration nuxeo-virtualnavigation nuxeo-datadog-reporter
+INSTANCE_CLID: |
+  d8180902-d787-4559-a582-5974518351aa
+  3e6feada-9634-48a5-882f-c84277addc63
+DATADOG_APIKEY: 69e9df273af725d0304a8e8c23ee66f5
