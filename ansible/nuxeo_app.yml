@@ -1,0 +1,30 @@
+
+- name: apply common configuration to all nodes
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    AWS_REGION: us-east-1
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+    NUXEO_VAR_FILE: "group_vars/nuxeo.yml"
+    NUXEO_VERSION: "8.10"
+    APP_DIR: "/apps"
+    SERVICE: app
+    NUXEO_SCRIPTS:
+      app: ["nuxeo_backup","nuxeo_restore","restore_from_another_account","nuxeo_ansible_update"]
+  vars_files:
+    - "{{ NUXEO_VAR_FILE }}"
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-hostname-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-route53-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-scripts-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-apache-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-postfix-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-syslogng-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-datadog-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-json2hcl-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-cron-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-resolvconf-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-instance-clid-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-conf-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-packge-install.yml
