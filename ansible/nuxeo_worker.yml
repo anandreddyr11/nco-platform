@@ -1,0 +1,25 @@
+- name: Run worker role
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    AWS_REGION: us-east-1
+    SERVICE: worker
+    APP_DIR: "/apps"
+    NUXEO_SCRIPTS:
+      worker: ["nuxeo_ansible_update"]
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-hostname-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-route53-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-scripts-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-apache-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-postfix-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-syslogng-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-datadog-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-json2hcl-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-cron-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-resolvconf-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-instance-clid-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-conf-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-packge-install.yml

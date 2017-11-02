@@ -1,0 +1,9 @@
+- name: create deployment descriptor
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    AWS_REGION: us-east-1
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-deployment-descriptor-configure.yml

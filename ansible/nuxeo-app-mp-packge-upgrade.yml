@@ -1,0 +1,10 @@
+- name: Upgrade nuxeo packages using mp-install 
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    AWS_REGION: us-east-1
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-json2hcl-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-mp-packge-upgrade.yml

@@ -1,0 +1,10 @@
+- name: configure datadog agent on node
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    AWS_REGION: us-east-1
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+    APP_DIR: "/apps"
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-datadog-configure.yml

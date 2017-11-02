@@ -1,0 +1,7 @@
+
+- name: apply common configuration to all nodes
+  hosts: localhost
+  remote_user: root
+
+  roles:
+    - security_updates

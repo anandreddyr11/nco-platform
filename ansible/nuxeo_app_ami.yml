@@ -1,0 +1,36 @@
+
+- name: nuxeo app ami task list
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    AWS_REGION: us-east-1
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+    NUXEO_VAR_FILE: "group_vars/nuxeo.yml"
+    NUXEO_VERSION: "8.10"
+    APP_DIR: "/apps"
+    SERVICE: app
+    NUXEO_SCRIPTS:
+      app: ["nuxeo_backup","nuxeo_restore","restore_from_another_account","nuxeo_ansible_update"]
+  vars_files:
+    - "{{ NUXEO_VAR_FILE }}"
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-system-updates-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-utility-packages-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-syslogng-install.yml
+   - include_role:
+       name: community/aws-cli
+   - include_role:
+       name: community/oracal-java8
+   - include_role:
+       name: community/elasticsearch-wrapper
+   - include: roles/nuxeo/tasks/nuxeo-systems-packages-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-json2hcl-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-scripts-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-cleanup-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-customer-packages-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-datadog-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-rc-local-configure.yml
+     when: ansible_distribution == 'Debian'

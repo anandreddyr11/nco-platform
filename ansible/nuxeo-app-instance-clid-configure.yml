@@ -1,0 +1,11 @@
+- name: Copy instance-clid from customer tf varible file
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    AWS_REGION: us-east-1
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+    APP_DIR: "/apps"
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-json2hcl-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-app-instance-clid-configure.yml

@@ -1,0 +1,11 @@
+- name: set hostname
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    AWS_REGION: us-east-1
+    SERVICE: bastion
+    NUXEO_SCRIPTS:
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-hostname-configure.yml

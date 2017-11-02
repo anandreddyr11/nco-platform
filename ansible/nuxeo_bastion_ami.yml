@@ -1,0 +1,26 @@
+- name: nuxeo bastion ami task list
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    AWS_REGION: us-east-1
+    SERVICE: bastion
+    NUXEO_VERSION: "8.10"
+    NUXEO_SCRIPTS:
+      bastion: ["run_restore_script","nuxeo_ansible_update"]
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+    NUXEO_VAR_FILE: "group_vars/nuxeo.yml"
+  vars_files:
+    - "{{ NUXEO_VAR_FILE }}"
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-system-updates-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-utility-packages-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-json2hcl-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-syslogng-install.yml
+   - include_role:
+       name: community/aws-cli
+   - include: roles/nuxeo/tasks/nuxeo-scripts-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-datadog-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-cleanup-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-rc-local-configure.yml
+     when: ansible_distribution == 'Debian'

@@ -1,0 +1,32 @@
+- name: nuxeo es ami task list
+  hosts: localhost
+  remote_user: root
+  become: yes
+  vars:
+    NUXEO_VERSION: "8.10"
+    AWS_REGION: us-east-1
+    SERVICE: es
+    NUXEO_SCRIPTS:
+      es: ["nuxeo_es_dedicated_backup","nuxeo_es_dedicated_restore","nuxeo_ansible_update"]
+    NUXEO_ROLE_PATH: "roles/nuxeo"
+    NUXEO_VAR_FILE: "group_vars/nuxeo.yml"
+    ES_DATA_PATH: "/usr/share/elasticsearch"
+    ES_VERSION: 2.3.5
+  vars_files:
+    - "{{ NUXEO_VAR_FILE }}"      
+  tasks:
+   - include: roles/nuxeo/tasks/nuxeo-system-updates-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-utility-packages-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-json2hcl-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-syslogng-install.yml
+   - include_role:
+       name: community/aws-cli
+   - include_role:
+       name: community/oracal-java8
+   - include_role:
+       name: community/elasticsearch-wrapper
+   - include: roles/nuxeo/tasks/nuxeo-scripts-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-datadog-install.yml
+   - include: roles/nuxeo/tasks/nuxeo-cleanup-configure.yml
+   - include: roles/nuxeo/tasks/nuxeo-rc-local-configure.yml
+     when: ansible_distribution == 'Debian'
